@@ -13,3 +13,6 @@
                 app.use(bodyParser.json()); 
                 app.use(bodyParser.urlencoded());
      ÔÚrouter´òÓ¡  req.body
+     
+     
+     git remote add origin git@github.com:ChLiaoXiang/mygitremove.git
