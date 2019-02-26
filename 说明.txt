@@ -1,0 +1,15 @@
+使用此项目 ：
+
+1，启动方式  node ./app.js   或者 npm start
+2，服务器端口：http://127.0.0.1:8888  ==>直接在浏览器上输入127.0.0.1:8888
+3，项目静态托管文件keniCode 目录  进入后就能直接看到静态项目
+
+4，请求在dynamic.html 文件上-->因为keniCode 文件已经被托管 所以在浏览器上输入 http://127.0.0.1:8888/dynamic.html
+5，router 为express 路由js 文件在router文件夹下的 ajaxRouter.js
+6，get 请求提供了接受参数 req.query.xxx
+7，post请求需要中间模块  'body-parser'模块 需要安装  app模块下
+                const bodyParser = require('body-parser');
+                //使用body中间件
+                app.use(bodyParser.json()); 
+                app.use(bodyParser.urlencoded());
+     在router打印  req.body

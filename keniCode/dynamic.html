@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AJAX 请求</title>
+</head>
+<body>
+    <!-- 服务器已静态托管keniCode -->
+    <div>
+        <p>ajax 未封装请求</p>
+       <button id="getAjax">get 请求</button> 
+       <button id="postAjax">post 请求</button>
+    </div>
+    <hr>
+    <div>
+        <p>ajax 封装后请求</p>
+        <button id="pageGet">封装后get 请求</button> 
+        <button id="pagePost">封装后post 请求</button>
+    </div>
+    <script>
+        getBtn = document.getElementById('getAjax');
+        postBtn = document.getElementById('postAjax');
+
+        getBtn.onclick = function(e){
+            //创建一个xhr 对象
+            var xhr = new XMLHttpRequest();
+            //创建请求连接
+            xhr.open('GET','/user/getTran?name=cimei&age=12',true);
+            //发送请求
+            xhr.send();
+            //设置回调函数！
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status ==200){
+                    console.log(JSON.parse(xhr.responseText));
+                }
+            }
+        }
+        postBtn.onclick = function(){
+            //创建一个xhr 对象
+            var xhr = new XMLHttpRequest();
+            //创建请求连接
+            xhr.open('POST','/user/postPram',true);
+            //设置post 请求头
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            //发送请求
+            xhr.send('name=liaoxiang&age=12');
+            //设置回调函数
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log(JSON.parse(xhr.responseText));
+                }
+            }
+        }
+        pageGetBtn = document.getElementById('pageGet');
+        pagePostBtn = document.getElementById('pagePost');
+
+        // 封装一个ajax 请求
+        function myAjax({type,data,url},callback){
+            //创建一个xhr 对象
+            var xhr =  new XMLHttpRequest();
+            if(type == 'GET'){
+                xhr.open('GET',url+'?'+data,true);
+                xhr.send();
+            }else if(type == "POST"){
+                xhr.open('POST',url,true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(data);
+            }else{
+                throw '该方法是允许get post 请求方式';
+            }
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    var res = JSON.parse(xhr.responseText);
+                    callback(res);
+                }
+            }
+        }
+        // 封装一个ajax 请求
+        function myAjax_01(OBJ,callback){
+            //创建一个xhr 对象
+            var xhr =  new XMLHttpRequest();
+            if(OBJ.type == 'GET'){
+                xhr.open('GET',OBJ.url+'?'+OBJ.data,true);
+                xhr.send();
+            }else if(OBJ.type == "POST"){
+                xhr.open('POST',OBJ.url,true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(OBJ.data);
+            }else{
+                throw '该方法是允许get post 请求方式';
+            }
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    var res = JSON.parse(xhr.responseText);
+                    callback(res);
+                }
+            }
+        }
+
+        pageGetBtn.onclick = function(){
+            myAjax_01({
+                type:'GET',
+                data:'name=cimei&age=12',
+                url:'/user/getTran'
+            },function(res){
+                console.log(res);
+            })
+        }
+        pagePostBtn.onclick = function(){
+            myAjax({
+                type:'POST',
+                data:'name=liaoxiang&age=12',
+                url:'/user/postPram'
+            },function(res){
+                console.log(res);
+            })
+        }
+    </script>
+</body>
+</html>
